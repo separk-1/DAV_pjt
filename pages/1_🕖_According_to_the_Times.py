@@ -9,6 +9,8 @@ st.set_page_config(
     layout = "wide",
 )
 
+st.subheader("🕖 영화의 길이는 시대에 따라 어떻게 변화하였을까❓")
+
 use_col = ['Year', 'Runtime(Mins)', 'main_genre', 'side_genre']
 df = pd.read_csv("./IMDb_All_Genres_etf_clean1.csv", usecols = use_col)
 
