@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 from PIL import Image
+import plotly.express as px
 
 from time import sleep
 
@@ -46,6 +47,31 @@ use_col = ['Year', 'Runtime(Mins)', 'main_genre', 'side_genre']
 df = pd.read_csv("./IMDb_All_Genres_etf_clean1.csv", usecols = use_col)
 
 st.write(
-    """kaggle IMDb 5000+ Movies & Multiple Genres Dataset 을 통해 시대에 따른 영화 상영 시간 길이를 시각화하였다.
+    """[Dataset](https://www.kaggle.com/datasets/rakkesharv/imdb-5000-movies-multiple-genres-dataset?resource=download) 을 통해 시대에 따른 영화 상영 시간 길이를 시각화하였다.
 """
 )
+
+range = st.slider('언제부터 언제까지❓', 1920, 2022, (1920, 2022))
+st.text('%s년부터 %s년까지의 영화 길이 변화는 다음과 같다.'%(range[0], range[1]))
+
+df_range = df[df["Year"]>=range[0]]
+df_range = df_range[df_range["Year"]<=range[1]]
+
+df_range['Year'] = pd.to_numeric(df_range['Year'])
+year_list = sorted(list(set(list(df_range['Year']))))
+
+Times_median = []
+Times_mean = []
+for y in year_list:
+    times = list(df_range[df_range['Year']==y]['Runtime(Mins)'])
+    Times_median.append(round(np.median(times),2))
+    Times_mean.append(round(np.mean(times),2))
+
+Time_df = pd.DataFrame({"Year": year_list, "Runtime(mean)": Times_mean, "Runtime(median)": Times_median})
+Time_df = Time_df.set_index("Year")
+st.line_chart(Time_df)
+
+with st.expander('데이터프레임 보기') :
+    st.dataframe(Time_df)
+
+st.subheader("🕖 시대에 따른 영화 매체의 변화")
