@@ -9,24 +9,14 @@ st.set_page_config(
     layout = "wide",
 )
 
-st.subheader("시대에 따른 영화 상영 시간 변화")
+st.subheader("🕖 시대에 따른 영화 상영 시간 변화")
 
 use_col = ['Year', 'Runtime(Mins)', 'main_genre', 'side_genre']
 df = pd.read_csv("./IMDb_All_Genres_etf_clean1.csv", usecols = use_col)
 
-
-import streamlit as st
-import pandas as pd
 import pydeck as pdk
 from urllib.error import URLError
 
-
-# 페이지 기본 설정
-st.set_page_config(
-    page_icon="🐶",
-    page_title="빅공잼의 스트림릿 배포하기",
-    layout="wide",
-)
 
 st.markdown("# Mapping Demo")
 st.sidebar.header("Mapping Demo")
