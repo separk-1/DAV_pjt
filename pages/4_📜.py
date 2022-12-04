@@ -9,5 +9,10 @@ st.set_page_config(
 
 st.subheader("📜")
 
+name = st.text_input('이름을 입력하세요!')
+if name != '' :
+    st.subheader(name + '님 안녕하세요??')
+
 message = st.text_area('메세지를 입력하세요', height=3)
+
 st.subheader(message)
