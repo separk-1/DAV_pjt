@@ -7,4 +7,4 @@ st.set_page_config(
     layout = "wide",
 )
 
-st.subheader("장르에 따른 영화 상영 시간 차이")
+st.subheader("🎬 장르에 따른 영화 상영 시간 차이")

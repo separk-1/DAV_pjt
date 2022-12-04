@@ -9,101 +9,45 @@ st.set_page_config(
     layout = "wide",
 )
 
-st.subheader("🕖 시대에 따른 영화 상영 시간 변화")
-
 use_col = ['Year', 'Runtime(Mins)', 'main_genre', 'side_genre']
 df = pd.read_csv("./IMDb_All_Genres_etf_clean1.csv", usecols = use_col)
 
-import pydeck as pdk
-from urllib.error import URLError
-
-
-st.markdown("# Mapping Demo")
-st.sidebar.header("Mapping Demo")
 st.write(
-    """This demo shows how to use
-[`st.pydeck_chart`](https://docs.streamlit.io/library/api-reference/charts/st.pydeck_chart)
-to display geospatial data."""
+    """[Dataset](https://www.kaggle.com/datasets/rakkesharv/imdb-5000-movies-multiple-genres-dataset?resource=download) 을 통해 시대에 따른 영화 상영 시간 길이를 시각화하였다.
+"""
 )
 
+range = st.slider('언제부터 언제까지❓', 1920, 2022, (1920, 2022))
+st.text('%s년부터 %s년까지의 영화 길이 변화는 다음과 같다.'%(range[0], range[1]))
 
-@st.experimental_memo
-def from_data_file(filename):
-    url = (
-        "http://raw.githubusercontent.com/streamlit/"
-        "example-data/master/hello/v1/%s" % filename
-    )
-    return pd.read_json(url)
+df_range = df[df["Year"]>=range[0]]
+df_range = df_range[df_range["Year"]<=range[1]]
 
+df_range['Year'] = pd.to_numeric(df_range['Year'])
+year_list = sorted(list(set(list(df_range['Year']))))
 
-try:
-    ALL_LAYERS = {
-        "Bike Rentals": pdk.Layer(
-            "HexagonLayer",
-            data=from_data_file("bike_rental_stats.json"),
-            get_position=["lon", "lat"],
-            radius=200,
-            elevation_scale=4,
-            elevation_range=[0, 1000],
-            extruded=True,
-        ),
-        "Bart Stop Exits": pdk.Layer(
-            "ScatterplotLayer",
-            data=from_data_file("bart_stop_stats.json"),
-            get_position=["lon", "lat"],
-            get_color=[200, 30, 0, 160],
-            get_radius="[exits]",
-            radius_scale=0.05,
-        ),
-        "Bart Stop Names": pdk.Layer(
-            "TextLayer",
-            data=from_data_file("bart_stop_stats.json"),
-            get_position=["lon", "lat"],
-            get_text="name",
-            get_color=[0, 0, 0, 200],
-            get_size=15,
-            get_alignment_baseline="'bottom'",
-        ),
-        "Outbound Flow": pdk.Layer(
-            "ArcLayer",
-            data=from_data_file("bart_path_stats.json"),
-            get_source_position=["lon", "lat"],
-            get_target_position=["lon2", "lat2"],
-            get_source_color=[200, 30, 0, 160],
-            get_target_color=[200, 30, 0, 160],
-            auto_highlight=True,
-            width_scale=0.0001,
-            get_width="outbound",
-            width_min_pixels=3,
-            width_max_pixels=30,
-        ),
-    }
-    st.sidebar.markdown("### Map Layers")
-    selected_layers = [
-        layer
-        for layer_name, layer in ALL_LAYERS.items()
-        if st.sidebar.checkbox(layer_name, True)
-    ]
-    if selected_layers:
-        st.pydeck_chart(
-            pdk.Deck(
-                map_style="mapbox://styles/mapbox/light-v9",
-                initial_view_state={
-                    "latitude": 37.76,
-                    "longitude": -122.4,
-                    "zoom": 11,
-                    "pitch": 50,
-                },
-                layers=selected_layers,
-            )
-        )
-    else:
-        st.error("Please choose at least one layer above.")
-except URLError as e:
-    st.error(
-        """
-        **This demo requires internet access.**
-        Connection error: %s
-    """
-        % e.reason
-    )
+Times_median = []
+Times_mean = []
+for y in year_list:
+    times = list(df_range[df_range['Year']==y]['Runtime(Mins)'])
+    Times_median.append(round(np.median(times),2))
+    Times_mean.append(round(np.mean(times),2))
+
+Time_df = pd.DataFrame({"Year": year_list, "Runtime(mean)": Times_mean, "Runtime(median)": Times_median})
+Time_df = Time_df.set_index("Year")
+st.line_chart(Time_df)
+
+with st.expander('데이터프레임 보기') :
+    st.dataframe(Time_df)
+
+st.write(
+    """1900년대 초반에는, 필름 깡통의 용량으로 인해 영화가 10-15분으로 무척 짧았다.\n
+    1920년대에 이르러 필름 깡통을 이어붙이는 기술이 발달하며 영화는 차츰 길어졌으나, 기술의 한계로 인해 영화 길이는 지금의 절반 정도에 그쳤다.\n
+    또한 영화의 초기로서 다양한 실험적인 영화들이 제작되었으며 상영 시간의 차이가 컸다.\n
+    1940년대 TV상영이 시작되며 영화는 점점 길어져 앞서 서술한 바와 같이 2시간으로 수렴하였다.\n
+    1980년대 비디오테이프가 등장하며 용량 관계상 1편의 영화를 테이프 하나에 전부 넣기 위해 영화는 다시 짧아졌다.\n
+    1990년대에는 dvd가, 그 뒤에는 인터넷이 보급되며 영화 길이는 다시 길어졌다.\n
+    더불어 70-80년대 멀티플렉스 극장의 등장으로 상영 시작시간이 전보다 중요하지 않아지고 특수효과 등 이야기 외에 다양한 볼거리가 영화에 많아지며 영화 길이는 더욱 길어졌다.\n
+    최근에는 OTT 서비스와의 경쟁 또한 영화를 길어지도록 하는 것에 일조하고 있다.
+"""
+)
