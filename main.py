@@ -9,9 +9,9 @@ import numpy as np
 import pandas as pd
 #import matplotlib.pyplot as plt
 #import matplotlib
-#matplotlib.use('Agg')       #서버에서, 화면에 표시하기 위해서 필요
-import seaborn as sns
-import altair as alt               ##https://altair-viz.github.io/
+#matplotlib.use('Agg')
+#import seaborn as sns
+import altair as alt
 import plotly.express as px
 
 # 페이지 이름
