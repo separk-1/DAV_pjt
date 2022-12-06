@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 from PIL import Image
-import streamlit_book as stb
+#import streamlit_book as stb
 
 import streamlit as st
 import numpy as np
