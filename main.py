@@ -7,7 +7,7 @@ from PIL import Image
 import streamlit as st
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 import matplotlib
 matplotlib.use('Agg')       #서버에서, 화면에 표시하기 위해서 필요
 import seaborn as sns
