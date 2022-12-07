@@ -57,7 +57,7 @@ def text_18(text):
     st.markdown(f'<p style="color:#000000;font-size:18px;border-radius:2%;">{text}</p>', unsafe_allow_html=True)    
 
 def text_32_highlight(text):
-    st.markdown(f'<p style="color:#B71600;font-size:32px;border-radius:2%;">{text}</p>', unsafe_allow_html=True)    
+    st.markdown(f'<p style="color:#476600;font-size:32px;border-radius:2%;">{text}</p>', unsafe_allow_html=True)    
 
 # 포맷 깔끔하게
 hide_default_format = """
@@ -75,7 +75,7 @@ text_24("[8조] 2021-214578 건축학과 박성은")
 split_line(2)
 split_line(2)
 split_line(2)
-text_24("""오늘날, 영화 상영 시간은 2시간에 수렴하고 있다. 여기에는 다양한 이유가 있지만, 본 프로젝트에서는 다음 두 주제에 집중하였다.\n""")
+text_24("""오늘날, 영화 상영 시간은 2시간에 수렴하고 있다. 여기에는 다양한 이유가 있지만, 본 프로젝트에서는 다음 세 가지 주제에 집중하였다.\n""")
 split_line(2)
 text_32_highlight("✅ 영화의 길이는 시대에 따라 어떻게 변화하였으며, 그 이유는 무엇일까?\n")
 split_line(2)
@@ -181,7 +181,7 @@ st.write("\n")
 st.write("\n")
 
 #############
-text_32("✨ 시대에 따라 어떤 장르의 영화가 인기를 끌었을까?")
+text_32("⚽ 시대에 따라 어떤 장르의 영화가 인기를 끌었을까?")
 st.write("\n")
 st.write("\n")
 use_col = ['Year', 'Runtime(Mins)', 'main_genre', 'side_genre']
@@ -275,7 +275,7 @@ st.write("\n")
 st.write("\n")
 st.write("\n")
 
-text_32("✨ 장르별 상영 시간에는 어떠한 차이가 있을까?")
+text_32("⚽ 장르별 상영 시간에는 어떠한 차이가 있을까?")
 st.write("\n")
 st.write("\n")
 
@@ -357,7 +357,7 @@ use_col2 = ['Movie_Title', 'Year', 'Rating', 'Runtime(Mins)', 'main_genre', 'sid
 df2 = pd.read_csv("./IMDb_All_Genres_etf_clean1.csv", usecols = use_col2)
 
 option = st.selectbox('슬라이더 종류 선택',
-                       ('10년 단위', '직접 조정'))
+                       ('직접 조정', '10년 단위'))
 	
 
 if option == "직접 조정":
@@ -385,7 +385,7 @@ text_18("total data Num. : %s "%(len(df_scatter)))
 
 chart = alt.Chart(df_scatter).mark_circle().encode( x = 'Runtime(Mins)', y='Rating', color = 'main_genre' )   ##알테어 
 st.altair_chart(chart, use_container_width=True)
-text_24("영화 상영 시간은 평점에는 큰 영향을 미치지 않는다.")
+text_24("영화 상영 시간은 평점에 큰 영향을 미치지 않는다.")
 
 st.write("\n")
 st.write("\n")
