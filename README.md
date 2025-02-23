@@ -52,6 +52,7 @@ A scatter plot analysis of **runtime vs. IMDb ratings** shows **no strong correl
 
 ## 📊 Visualizations
 The project includes:
+
 ✅ **Line charts** for historical runtime trends  
 ✅ **Bar & pie charts** for genre analysis  
 ✅ **Scatter plots** for rating-runtime correlation  
